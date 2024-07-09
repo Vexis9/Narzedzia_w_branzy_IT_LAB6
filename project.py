@@ -39,5 +39,32 @@ if __name__ == "__main__":
     else:
         print("Unsupported input file format")
         sys.exit(1)
+        
+        
+def save_json(file_path, data):
+    try:
+        with open(file_path, 'w') as file:
+            json.dump(data, file, indent=4)
+        print(f"Data successfully saved to {file_path}")
+    except Exception as e:
+        print(f"Error saving JSON: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    input_file, output_file = parse_arguments()
+    
+    if input_file.endswith('.json'):
+        data = load_json(input_file)
+        print("JSON data loaded successfully")
+        
+        if output_file.endswith('.json'):
+            save_json(output_file, data)
+        else:
+            print("Unsupported output file format")
+            sys.exit(1)
+    else:
+        print("Unsupported input file format")
+        sys.exit(1)
+
     
 
