@@ -1,6 +1,7 @@
 import sys
 import json
 import yaml
+import xml.etree.ElementTree as ET
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QFileDialog, QLabel
 
 def parse_arguments():
@@ -32,10 +33,25 @@ def save_json(file_path, data):
         sys.exit(1)
 
 def load_xml(file_path):
-    pass
+    try:
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        return root
+    except ET.ParseError as e:
+        print(f"Error parsing XML: {e}")
+        sys.exit(1)
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+        sys.exit(1)
 
 def save_xml(file_path, data):
-    pass
+    try:
+        tree = ET.ElementTree(data)
+        tree.write(file_path)
+        print(f"Data successfully saved to {file_path}")
+    except Exception as e:
+        print(f"Error saving XML: {e}")
+        sys.exit(1)
 
 def load_yaml(file_path):
     try:
@@ -151,6 +167,7 @@ if __name__ == "__main__":
         app = QApplication(sys.argv)
         ex = App()
         sys.exit(app.exec_())
+
 
     
 
